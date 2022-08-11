@@ -30,8 +30,8 @@ public class TSubrogationValidation {
     @Column(name = "id", columnDefinition="uniqueidentifier")
     private String id;
 
-    @Column(name = "f_id_program", columnDefinition="uniqueidentifier")
-    private String fIdProgram;
+    @Column(name = "f_id_program")
+    private Integer fIdProgram;
 
     @Column(name = "nomor_peserta", length = 50)
     private String nomorPeserta;
@@ -39,8 +39,8 @@ public class TSubrogationValidation {
     @Column(name = "nama_peserta", length = 50)
     private String namaPeserta;
 
-    @Column(name = "nomor_rekening_peminjaman", length = 50)
-    private String nomorRekeningPeminjaman;
+    @Column(name = "nomor_rekening_pinjaman", length = 50)
+    private String nomorRekeningPinjaman;
 
     @Column(name = "urutan_pengajuan")
     private Integer urutanPengajuan;

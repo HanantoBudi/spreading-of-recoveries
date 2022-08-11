@@ -14,7 +14,8 @@ public class CreateSor {
     @NotBlank
     public Integer productId;
 
-    @NotBlank
-    public BigDecimal nominalPayoffTotal;
-
+    @Override
+    public String toString() {
+        return "CreateSoc{product_id=" + productId + "}";
+    }
 }

@@ -36,8 +36,8 @@ public class TSubrogasi {
     @Column(name = "no_rekening", length = 50)
     private String noRekening;
 
-    @Column(name = "nama_peserta", length = 50)
-    private String namaPeserta;
+    @Column(name = "nomor_peserta", length = 50)
+    private String nomorPeserta;
 
     @Column(name = "nominal_claim")
     private BigDecimal nominalClaim;

@@ -53,7 +53,6 @@ public class TSubrogationSorService {
         try {
             logger.info("INSERT RECOVERIES PAYLOAD : " + mapper.writeValueAsString(createSor));
             Integer productId = createSor.getProductId();
-            // BigDecimal nominalPayoffTotal = createSor.getNominalPayoffTotal();
 
             List<TSubrogationValidation> tSubrogationValidations = tSubrogationValidationRepository.findAllByFIdProgramAndStatusProses(productId, 3);
             List<RTreatySchemeCob> rTreatySchemeCobs = rTreatySchemeCobRepository.findAllByProductId(productId);
@@ -69,15 +68,15 @@ public class TSubrogationSorService {
             for(TSubrogationValidation tSubrogationValidation: tSubrogationValidations){
                 Optional<TSubrogasi> tSubrogasi = tSubrogasiRepository.findByNoRekening(tSubrogationValidation.getNomorPeserta());
                 if (tSubrogasi.isPresent()){
-                    if (tSubrogasi.get().getNamaPeserta() != "") {
+                    if (tSubrogasi.get().getNomorPeserta() != "") {
                         Date tanggalAwalPenjaminanKur = null;
                         Optional<PenjaminanKurSpr> penjaminanKurSpr = penjaminanKurSprRepository.findByNoSertifikatSprAndFlagTerbitAcs
-                                (tSubrogasi.get().getNamaPeserta(), "3");
+                                (tSubrogasi.get().getNomorPeserta(), "3");
                         if (penjaminanKurSpr.isPresent()){
                             tanggalAwalPenjaminanKur = penjaminanKurSpr.get().getTanggalAwalSpr();
                         } else{
                             Optional<PenjaminanKur> penjaminanKur = penjaminanKurRepository.findByNoSertifikatAndFlagTerbitAcs
-                                (tSubrogasi.get().getNamaPeserta(), "3");
+                                (tSubrogasi.get().getNomorPeserta(), "3");
                             if (penjaminanKur.isPresent()){
                                 tanggalAwalPenjaminanKur = penjaminanKur.get().getTanggalAwal();
                             }
@@ -88,7 +87,7 @@ public class TSubrogationSorService {
                                 if (rTreatyScheme.getStartDate().compareTo(tanggalAwalPenjaminanKur) >= 0 && rTreatyScheme.getEndDate().compareTo(tanggalAwalPenjaminanKur) >= 0) {
                                     Optional<RTreatySchemeDetail> rTreatySchemeDetail = rTreatySchemeDetailRepository.findByTreatyId(rTreatyScheme.getId());
                                     if (rTreatySchemeDetail.isPresent()) {
-    
+
                                         TSubrogationSor newData = new TSubrogationSor();//Belom mapping data
                                         TSubrogationSor saveData = tSubrogationSorRepository.save(newData);
                                         logger.info("TCLAIMSOC CREATE, SUCCESS : "+ mapper.writeValueAsString(saveData));

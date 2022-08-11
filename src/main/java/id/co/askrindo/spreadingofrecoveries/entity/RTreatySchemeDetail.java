@@ -2,13 +2,16 @@ package id.co.askrindo.spreadingofrecoveries.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "dummy_r_treaty_scheme_dtl", schema = "brisurf")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,11 +25,11 @@ public class RTreatySchemeDetail {
     private String treatyId;
 
     @Column(name = "pct_or_limit")
-    private Integer pctOrLimit;
+    private BigDecimal pctOrLimit;
 
     @Column(name = "pct_reas")
-    private Integer pctReas;
+    private BigDecimal pctReas;
 
     @Column(name = "pct_comm")
-    private Integer pctComm;
+    private BigDecimal pctComm;
 }
