@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -41,4 +42,7 @@ public class PenjaminanKur {
 
     @Column(name = "flag_terbit_acs")
     private String flagTerbitAcs;
+
+    @Column(name = "plafon_kredit")
+    private BigDecimal plafonKredit;
 }
