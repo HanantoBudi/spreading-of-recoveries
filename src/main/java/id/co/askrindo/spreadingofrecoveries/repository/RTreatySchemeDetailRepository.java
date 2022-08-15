@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface RTreatySchemeDetailRepository extends JpaRepository<RTreatySchemeDetail, String> {
-    Optional<RTreatySchemeDetail> findByTreatyId (String treatyId);
+    Optional<RTreatySchemeDetail> findByTreatySchemeId (String treatyId);
 }

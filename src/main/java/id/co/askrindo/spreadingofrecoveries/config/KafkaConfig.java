@@ -7,24 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
-public class KafkaTopicConfig {
+public class KafkaConfig {
 
     @Value("${spring.kafka.topic.name}")
     private String topicName;
 
-    @Value("${spring.kafka.topic-json.name}")
-    private String topicJsonName;
-
     @Bean
-    public NewTopic javaguidesTopic() {
+    public NewTopic javaguidesTopic(){
         return TopicBuilder.name(topicName)
-            .build();
+                .build();
     }
-
-    @Bean
-    public NewTopic javaguidesJsonTopic() {
-        return TopicBuilder.name(topicJsonName)
-            .build();
-    }
-
 }

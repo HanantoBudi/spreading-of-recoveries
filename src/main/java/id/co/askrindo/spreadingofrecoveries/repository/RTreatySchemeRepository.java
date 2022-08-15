@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface RTreatySchemeRepository extends JpaRepository<RTreatyScheme, String> {
-    Optional<RTreatyScheme> findById (Integer id);
+    Optional<RTreatyScheme> findByTreatySchemeId (Integer id);
 }

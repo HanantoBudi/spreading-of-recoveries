@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "dummy_r_treaty_scheme_dtl", schema = "brisurf")
+@Table(name = "rei_treaty_scheme_dtl", schema = "dbo")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,18 +18,18 @@ import java.math.BigDecimal;
 @EntityListeners(AuditingEntityListener.class)
 public class RTreatySchemeDetail {
     @Id
-    @Column(name = "id", columnDefinition="uniqueidentifier")
-    private String id;
+    @Column(name = "scheme_dtl_id", columnDefinition="uniqueidentifier")
+    private String schemeDtlId;
 
-    @Column(name = "treaty_id", columnDefinition="uniqueidentifier")
-    private String treatyId;
+    @Column(name = "treaty_scheme_id", columnDefinition="uniqueidentifier")
+    private String treatySchemeId;
 
     @Column(name = "pct_or_limit")
     private BigDecimal pctOrLimit;
 
-    @Column(name = "pct_reas")
-    private BigDecimal pctReas;
+    @Column(name = "pct_treaty_limit")
+    private BigDecimal pctTreatyLimit;
 
-    @Column(name = "pct_comm")
-    private BigDecimal pctComm;
+    @Column(name = "pct_commission")
+    private BigDecimal pctCommission;
 }

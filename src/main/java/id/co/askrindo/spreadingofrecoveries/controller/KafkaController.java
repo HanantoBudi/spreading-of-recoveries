@@ -7,17 +7,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import id.co.askrindo.spreadingofrecoveries.kafka.KafkaProducer;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/kafka")
 public class KafkaController {
-    
+
     @Autowired
     KafkaProducer kafkaProducer;
 
     @PostMapping(value="/publish")
-    public void sendMessage(@RequestBody CreateSor createSor) {
+    public ResponseEntity<String>  sendMessage(@RequestBody CreateSor createSor) {
         kafkaProducer.sendMessage(createSor);
+        return ResponseEntity.ok("Message has been sent to kafka topic. ");
     }
 
 }

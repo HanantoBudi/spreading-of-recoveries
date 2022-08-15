@@ -63,7 +63,7 @@ public class TSubrogationSorService {
 
             List<RTreatyScheme> dataRTreatyScheme = new ArrayList<>();
             for(RTreatySchemeCob rTreatySchemeCob : rTreatySchemeCobs){
-                Optional<RTreatyScheme> rTreatyScheme = rTreatySchemeRepository.findById(rTreatySchemeCob.getTreatyId());
+                Optional<RTreatyScheme> rTreatyScheme = rTreatySchemeRepository.findById(rTreatySchemeCob.getTreatySchemeId());
                 if (rTreatyScheme.isPresent()){
                     dataRTreatyScheme.add(rTreatyScheme.get());
                 }
@@ -96,7 +96,7 @@ public class TSubrogationSorService {
                         for(RTreatyScheme rTreatyScheme : dataRTreatyScheme){
                             if (tanggalAwalPenjaminanKur != null) {
                                 if (rTreatyScheme.getStartDate().compareTo(tanggalAwalPenjaminanKur) >= 0 && rTreatyScheme.getEndDate().compareTo(tanggalAwalPenjaminanKur) >= 0) {
-                                    Optional<RTreatySchemeDetail> rTreatySchemeDetail = rTreatySchemeDetailRepository.findByTreatyId(rTreatyScheme.getId());
+                                    Optional<RTreatySchemeDetail> rTreatySchemeDetail = rTreatySchemeDetailRepository.findByTreatySchemeId(rTreatyScheme.getTreatySchemeId());
                                     if (rTreatySchemeDetail.isPresent()) {
                                         calendarPenjaminanKur.setTime(tanggalAwalPenjaminanKur);
 
@@ -105,8 +105,8 @@ public class TSubrogationSorService {
                                         BigDecimal nominalBunga = (tSubrogationValidation.getNominalBunga() != null ? tSubrogationValidation.getNominalBunga() : BigDecimal.valueOf(0));
                                         BigDecimal collectingFeeGross = (tSubrogationValidation.getCollectingFeeGross() != null ? tSubrogationValidation.getCollectingFeeGross() : BigDecimal.valueOf(0));
                                         BigDecimal pctOrLimit = (rTreatySchemeDetail.get().getPctOrLimit() != null ? rTreatySchemeDetail.get().getPctOrLimit() : BigDecimal.valueOf(0));
-                                        BigDecimal pctReas = (rTreatySchemeDetail.get().getPctReas() != null ? rTreatySchemeDetail.get().getPctReas() : BigDecimal.valueOf(0));
-                                        BigDecimal pctCommision = (rTreatySchemeDetail.get().getPctComm() != null ? rTreatySchemeDetail.get().getPctComm() : BigDecimal.valueOf(0));
+                                        BigDecimal pctReas = (rTreatySchemeDetail.get().getPctTreatyLimit() != null ? rTreatySchemeDetail.get().getPctTreatyLimit() : BigDecimal.valueOf(0));
+                                        BigDecimal pctCommision = (rTreatySchemeDetail.get().getPctCommission() != null ? rTreatySchemeDetail.get().getPctCommission() : BigDecimal.valueOf(0));
 
                                         BigDecimal plafon = penjaminanKurPlafon;
                                         BigDecimal recoveries = nominalPokok
@@ -123,7 +123,7 @@ public class TSubrogationSorService {
                                             .idRecoveries(tSubrogasiSummary.get().getId())
                                             .lineNo(tSubrogationValidation.getUrutanPengajuan())
                                             .year(calendarPenjaminanKur.get(Calendar.YEAR))
-                                            .treatySchemeId(rTreatySchemeDetail.get().getTreatyId())
+                                            .treatySchemeId(rTreatySchemeDetail.get().getTreatySchemeId())
                                             .tsi(plafon)
                                             .recoveries(recoveries)
                                             .pctOr(pctOrLimit)

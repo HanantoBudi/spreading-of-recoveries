@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "dummy_r_treaty_scheme_cob", schema = "brisurf")
+@Table(name = "rei_treaty_scheme_cob", schema = "dbo")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,15 +17,15 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 public class RTreatySchemeCob {
     @Id
-    @Column(name = "id", columnDefinition="uniqueidentifier")
-    private String id;
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "treaty_scheme_id", columnDefinition="uniqueidentifier")
+    private String treatySchemeId;
 
     @Column(name = "product_id")
     private int productId;
 
-    @Column(name = "treaty_id", columnDefinition="uniqueidentifier")
-    private String treatyId;
-
-    @Column(name = "tahun")
-    private Integer year;
+    @Column(name = "treaty_year")
+    private Integer treatyYear;
 }
