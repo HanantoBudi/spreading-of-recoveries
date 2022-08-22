@@ -24,7 +24,7 @@ public class KafkaConsumer {
     @KafkaListener(topics = "${spring.kafka.topic-json.name}", groupId = "${spring.kafka.consumer.group-id}")
     public void consume(CreateSor createSor){
         LOGGER.info(String.format("Json message recieved : %s [start] -> %s", topicName, createSor.toString()));
-        ResponseEntity<?> tClaimSocCreate = tSubrogationSorService.recoveriesSorProsess(createSor);
+        ResponseEntity<?> tSubrogationSorCreate = tSubrogationSorService.recoveriesSorProsess(createSor);
         LOGGER.info(String.format("Json message recieved : %s [end] -> %s", topicName, createSor.toString()));
     }
 }

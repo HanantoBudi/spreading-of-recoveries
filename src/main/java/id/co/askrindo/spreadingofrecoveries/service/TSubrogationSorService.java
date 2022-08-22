@@ -17,7 +17,7 @@ import java.util.*;
 
 @Service
 public class TSubrogationSorService {
-    public  final Logger logger = LoggerFactory.getLogger("TClaimSocService endpoints");
+    public  final Logger logger = LoggerFactory.getLogger("TSubrogationSorService endpoints");
     ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
@@ -147,9 +147,9 @@ public class TSubrogationSorService {
                                         TSubrogationSor saveData = tSubrogationSorRepository.save(newData);
                                         if(saveData.getId() != "") {
                                             resultDatas.add(saveData);
-                                            logger.info("TCLAIMSOC CREATE, SUCCESS : "+ mapper.writeValueAsString(saveData));
+                                            logger.info("SPREADING OF RECOVERIES CREATE, SUCCESS : "+ mapper.writeValueAsString(saveData));
                                         } else {
-                                            logger.info("TCLAIMSOC CREATE, FAILED : "+ mapper.writeValueAsString(saveData));
+                                            logger.info("SPREADING OF RECOVERIES CREATE, FAILED : "+ mapper.writeValueAsString(saveData));
                                         }
                                     }
                                 }
@@ -161,7 +161,7 @@ public class TSubrogationSorService {
 
             return new ResponseEntity<>(resultDatas, HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("TCLAIMSOC CREATE, FAILED : "+e.getMessage());
+            logger.error("SPREADING OF RECOVERIES CREATE, FAILED : "+e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
