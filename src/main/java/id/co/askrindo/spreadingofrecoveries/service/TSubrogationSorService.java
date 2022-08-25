@@ -51,26 +51,25 @@ public class TSubrogationSorService {
     RTreatySchemeDetailRepository rTreatySchemeDetailRepository;
 
     @Transactional
-    public ResponseEntity<?> recoveriesSorProsess(CreateSor createSor) {
+    public ResponseEntity<?> recoveriesSorProsess(String message) {
         try {
-            logger.info("INSERT RECOVERIES PAYLOAD : " + mapper.writeValueAsString(createSor));
-            Integer productId = createSor.getProductId();
+            logger.info("INSERT RECOVERIES PAYLOAD : " + message);
             String userName = "h2h-kur-bri";
-            List<TSubrogationSor> resultDatas = new ArrayList<>();
+            TSubrogationSor result = new TSubrogationSor();
 
-            List<TSubrogationValidation> tSubrogationValidations = tSubrogationValidationRepository.findAllByFIdProgramAndStatusProses(productId, 3);
-            List<RTreatySchemeCob> rTreatySchemeCobs = rTreatySchemeCobRepository.findAllByProductId(productId);
+            Optional<TSubrogationValidation> tSubrogationValidation = tSubrogationValidationRepository.findByIdAndStatusProses(Integer.valueOf(message), 3);
+            if (tSubrogationValidation.isPresent()) {
+                List<RTreatySchemeCob> rTreatySchemeCobs = rTreatySchemeCobRepository.findAllByProductId(tSubrogationValidation.get().getFIdProgram());
 
-            List<RTreatyScheme> dataRTreatyScheme = new ArrayList<>();
-            for(RTreatySchemeCob rTreatySchemeCob : rTreatySchemeCobs){
-                Optional<RTreatyScheme> rTreatyScheme = rTreatySchemeRepository.findById(rTreatySchemeCob.getTreatySchemeId());
-                if (rTreatyScheme.isPresent()){
-                    dataRTreatyScheme.add(rTreatyScheme.get());
+                List<RTreatyScheme> dataRTreatyScheme = new ArrayList<>();
+                for(RTreatySchemeCob rTreatySchemeCob : rTreatySchemeCobs){
+                    Optional<RTreatyScheme> rTreatyScheme = rTreatySchemeRepository.findById(rTreatySchemeCob.getTreatySchemeId());
+                    if (rTreatyScheme.isPresent()){
+                        dataRTreatyScheme.add(rTreatyScheme.get());
+                    }
                 }
-            }
 
-            for(TSubrogationValidation tSubrogationValidation: tSubrogationValidations){
-                Optional<TSubrogasi> tSubrogasi = tSubrogasiRepository.findByNoRekening(tSubrogationValidation.getNomorPeserta());
+                Optional<TSubrogasi> tSubrogasi = tSubrogasiRepository.findByNoRekening(tSubrogationValidation.get().getNomorPeserta());
                 Optional<TSubrogasiSummary> tSubrogasiSummary = tSubrogasiSummaryRepository.findByIdSubrogasi(tSubrogasi.get().getId());
                 Optional<KlaimKur> klaimKur = klaimKurRepository.findById(tSubrogasi.get().getIdKlaim());
                 if (klaimKur.isPresent()){
@@ -86,7 +85,7 @@ public class TSubrogationSorService {
                             penjaminanKurPlafon = penjaminanKurSpr.get().getPlafonSpr();
                         } else{
                             Optional<PenjaminanKur> penjaminanKur = penjaminanKurRepository.findByNoSertifikatAndFlagTerbitAcs
-                                (klaimKur.get().getNoSertifikat(), "3");
+                                    (klaimKur.get().getNoSertifikat(), "3");
                             if (penjaminanKur.isPresent()){
                                 tanggalAwalPenjaminanKur = penjaminanKur.get().getTanggalAwal();
                                 penjaminanKurPlafon = penjaminanKur.get().getPlafonKredit();
@@ -100,19 +99,19 @@ public class TSubrogationSorService {
                                     if (rTreatySchemeDetail.isPresent()) {
                                         calendarPenjaminanKur.setTime(tanggalAwalPenjaminanKur);
 
-                                        BigDecimal nominalPokok = (tSubrogationValidation.getNominalPokok() != null ? tSubrogationValidation.getNominalPokok() : BigDecimal.valueOf(0));
-                                        BigDecimal nominalDenda= (tSubrogationValidation.getNominalDenda() != null ? tSubrogationValidation.getNominalDenda() : BigDecimal.valueOf(0));
-                                        BigDecimal nominalBunga = (tSubrogationValidation.getNominalBunga() != null ? tSubrogationValidation.getNominalBunga() : BigDecimal.valueOf(0));
-                                        BigDecimal collectingFeeGross = (tSubrogationValidation.getCollectingFeeGross() != null ? tSubrogationValidation.getCollectingFeeGross() : BigDecimal.valueOf(0));
+                                        BigDecimal nominalPokok = (tSubrogationValidation.get().getNominalPokok() != null ? tSubrogationValidation.get().getNominalPokok() : BigDecimal.valueOf(0));
+                                        BigDecimal nominalDenda= (tSubrogationValidation.get().getNominalDenda() != null ? tSubrogationValidation.get().getNominalDenda() : BigDecimal.valueOf(0));
+                                        BigDecimal nominalBunga = (tSubrogationValidation.get().getNominalBunga() != null ? tSubrogationValidation.get().getNominalBunga() : BigDecimal.valueOf(0));
+                                        BigDecimal collectingFeeGross = (tSubrogationValidation.get().getCollectingFeeGross() != null ? tSubrogationValidation.get().getCollectingFeeGross() : BigDecimal.valueOf(0));
                                         BigDecimal pctOrLimit = (rTreatySchemeDetail.get().getPctOrLimit() != null ? rTreatySchemeDetail.get().getPctOrLimit() : BigDecimal.valueOf(0));
                                         BigDecimal pctReas = (rTreatySchemeDetail.get().getPctTreatyLimit() != null ? rTreatySchemeDetail.get().getPctTreatyLimit() : BigDecimal.valueOf(0));
                                         BigDecimal pctCommision = (rTreatySchemeDetail.get().getPctCommission() != null ? rTreatySchemeDetail.get().getPctCommission() : BigDecimal.valueOf(0));
 
                                         BigDecimal plafon = penjaminanKurPlafon;
                                         BigDecimal recoveries = nominalPokok
-                                            .add(nominalDenda)
-                                            .add(nominalBunga)
-                                            .add(collectingFeeGross);
+                                                .add(nominalDenda)
+                                                .add(nominalBunga)
+                                                .add(collectingFeeGross);
                                         BigDecimal tsiDistributionOr = pctOrLimit.multiply(plafon);
                                         BigDecimal recoveriesDistributionOr = pctOrLimit.multiply(recoveries);
                                         BigDecimal tsiDistributionQs = pctReas.multiply(plafon);
@@ -120,33 +119,33 @@ public class TSubrogationSorService {
                                         BigDecimal commission = (pctCommision.multiply(recoveriesDistributionQs)).divide(BigDecimal.valueOf(100));
 
                                         TSubrogationSor newData = TSubrogationSor.builder()
-                                            .idRecoveries(tSubrogasiSummary.get().getId())
-                                            .lineNo(tSubrogationValidation.getUrutanPengajuan())
-                                            .year(calendarPenjaminanKur.get(Calendar.YEAR))
-                                            .treatySchemeId(rTreatySchemeDetail.get().getTreatySchemeId())
-                                            .tsi(plafon)
-                                            .recoveries(recoveries)
-                                            .pctOr(pctOrLimit)
-                                            .tsiDistributionOr(tsiDistributionOr)
-                                            .recoveriesDistributionOr(recoveriesDistributionOr)
-                                            .pctQs(pctReas)
-                                            .tsiDistributionQs(tsiDistributionQs)
-                                            .recoveriesDistributionQs(recoveriesDistributionQs)
-                                            .pctCommision(pctCommision)
-                                            .commission(commission)
-                                            .isJurnal(false)
-                                            .idJurnal(null)
-                                            .jurnalNo(null)
-                                            .tglJurnal(null)
-                                            .createdBy(userName)
-                                            .createdDate(new Date())
-                                            .modifiedBy(null)
-                                            .modifiedDate(null)
-                                            .build();
+                                                .idRecoveries(tSubrogasiSummary.get().getId())
+                                                .lineNo(tSubrogationValidation.get().getUrutanPengajuan())
+                                                .year(calendarPenjaminanKur.get(Calendar.YEAR))
+                                                .treatySchemeId(rTreatySchemeDetail.get().getTreatySchemeId())
+                                                .tsi(plafon)
+                                                .recoveries(recoveries)
+                                                .pctOr(pctOrLimit)
+                                                .tsiDistributionOr(tsiDistributionOr)
+                                                .recoveriesDistributionOr(recoveriesDistributionOr)
+                                                .pctQs(pctReas)
+                                                .tsiDistributionQs(tsiDistributionQs)
+                                                .recoveriesDistributionQs(recoveriesDistributionQs)
+                                                .pctCommision(pctCommision)
+                                                .commission(commission)
+                                                .isJurnal(false)
+                                                .idJurnal(null)
+                                                .jurnalNo(null)
+                                                .tglJurnal(null)
+                                                .createdBy(userName)
+                                                .createdDate(new Date())
+                                                .modifiedBy(null)
+                                                .modifiedDate(null)
+                                                .build();
 
                                         TSubrogationSor saveData = tSubrogationSorRepository.save(newData);
                                         if(saveData.getId() != "") {
-                                            resultDatas.add(saveData);
+                                            result = saveData;
                                             logger.info("SPREADING OF RECOVERIES CREATE, SUCCESS : "+ mapper.writeValueAsString(saveData));
                                         } else {
                                             logger.info("SPREADING OF RECOVERIES CREATE, FAILED : "+ mapper.writeValueAsString(saveData));
@@ -159,7 +158,7 @@ public class TSubrogationSorService {
                 }
             }
 
-            return new ResponseEntity<>(resultDatas, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("SPREADING OF RECOVERIES CREATE, FAILED : "+e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

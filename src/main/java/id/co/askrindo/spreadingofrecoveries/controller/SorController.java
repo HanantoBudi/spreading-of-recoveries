@@ -1,6 +1,5 @@
 package id.co.askrindo.spreadingofrecoveries.controller;
 
-import id.co.askrindo.spreadingofrecoveries.model.CreateSor;
 import id.co.askrindo.spreadingofrecoveries.service.TSubrogationSorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,7 @@ public class SorController {
     private TSubrogationSorService tSubrogationSorService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody CreateSor createSor){
-        return tSubrogationSorService.recoveriesSorProsess(createSor);
+    public ResponseEntity<?> create(@RequestParam String message){
+        return tSubrogationSorService.recoveriesSorProsess(message);
     }
 }

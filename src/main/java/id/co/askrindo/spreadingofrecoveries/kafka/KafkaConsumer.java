@@ -1,6 +1,5 @@
 package id.co.askrindo.spreadingofrecoveries.kafka;
 
-import id.co.askrindo.spreadingofrecoveries.model.CreateSor;
 import id.co.askrindo.spreadingofrecoveries.service.TSubrogationSorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +20,10 @@ public class KafkaConsumer {
     @Value("${spring.kafka.topic-json.name}")
     private String topicName;
 
-    @KafkaListener(topics = "${spring.kafka.topic-json.name}", groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(CreateSor createSor){
-        LOGGER.info(String.format("Json message recieved : %s [start] -> %s", topicName, createSor.toString()));
-        ResponseEntity<?> tSubrogationSorCreate = tSubrogationSorService.recoveriesSorProsess(createSor);
-        LOGGER.info(String.format("Json message recieved : %s [end] -> %s", topicName, createSor.toString()));
+    @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}")
+    public void consume(String message){
+        LOGGER.info(String.format("Json message recieved : %s [start] -> %s", topicName, message));
+        ResponseEntity<?> tSubrogationSorCreate = tSubrogationSorService.recoveriesSorProsess(message);
+        LOGGER.info(String.format("Json message recieved : %s [end] -> %s", topicName, message));
     }
 }
