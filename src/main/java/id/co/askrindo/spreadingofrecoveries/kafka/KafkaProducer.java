@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class KafkaProducer {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
 
-    @Value("${spring.kafka.topic-json.name}")
+    @Value("${spring.kafka.topic.name}")
     private String topicName;
 
     private KafkaTemplate<String, CreateSor> kafkaTemplate;

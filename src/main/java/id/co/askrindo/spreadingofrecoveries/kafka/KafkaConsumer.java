@@ -17,7 +17,7 @@ public class KafkaConsumer {
     @Autowired
     private TSubrogationSorService tSubrogationSorService;
 
-    @Value("${spring.kafka.topic-json.name}")
+    @Value("${spring.kafka.topic.name}")
     private String topicName;
 
     @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}")

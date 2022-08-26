@@ -93,7 +93,6 @@ public class TSubrogationSorService {
                         }
 
                         if (!dataRTreatyScheme.isEmpty()) {
-                        
                             for(RTreatyScheme rTreatyScheme : dataRTreatyScheme){
                                 if (tanggalAwalPenjaminanKur != null) {
                                     if (rTreatyScheme.getStartDate().compareTo(tanggalAwalPenjaminanKur) >= 0 && rTreatyScheme.getEndDate().compareTo(tanggalAwalPenjaminanKur) >= 0) {
@@ -157,7 +156,7 @@ public class TSubrogationSorService {
                                 }
                             }
                         } else {
-                            logger.info("SPREADING OF RECOVERIES CREATE, INFO : Get dataRTreatyScheme by noRekening " + tClaimConfirmation.getNomorPeserta() + " IS EMPTY");
+                            logger.info("SPREADING OF RECOVERIES CREATE, INFO : Get dataRTreatyScheme by noRekening " + tSubrogationValidation.get().getNomorPeserta() + " IS EMPTY");
                         }
                     }
                 }
