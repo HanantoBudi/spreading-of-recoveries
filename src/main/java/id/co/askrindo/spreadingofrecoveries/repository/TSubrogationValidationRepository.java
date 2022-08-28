@@ -14,6 +14,6 @@ public interface TSubrogationValidationRepository extends JpaRepository<TSubroga
 
     Optional<TSubrogationValidation> findById (Integer id);
 
-    Optional<TSubrogationValidation> findByIdAndStatusProses(String id, Integer statusProses);
+    Optional<TSubrogationValidation> findByIdAndStatusProses(String id, String statusProses);
 
 }

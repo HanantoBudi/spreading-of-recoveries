@@ -58,7 +58,7 @@ public class TSubrogationSorService {
             String userName = "h2h-kur-bri";
             TSubrogationSor result = new TSubrogationSor();
 
-            Optional<TSubrogationValidation> tSubrogationValidation = tSubrogationValidationRepository.findByIdAndStatusProses(message, 3);
+            Optional<TSubrogationValidation> tSubrogationValidation = tSubrogationValidationRepository.findByIdAndStatusProses(message, "3");
             if (tSubrogationValidation.isPresent()) {
                 List<RTreatySchemeCob> rTreatySchemeCobs = rTreatySchemeCobRepository.findAllByProductId(tSubrogationValidation.get().getFIdProgram());
 
