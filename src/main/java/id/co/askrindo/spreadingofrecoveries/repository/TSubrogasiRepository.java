@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TSubrogasiRepository extends JpaRepository<TSubrogasi, String> {
     Optional<TSubrogasi> findByNoRekening (String noRekening);
+
+    Optional<TSubrogasi> findByNomorPeserta (String nomorPeserta);
 }

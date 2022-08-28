@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface PenjaminanKurRepository extends JpaRepository<PenjaminanKur, String> {
-    @Query(value="select*from penjaminan_kur where no_sertifikat = :noSertifikat and flag_terbit_acs = :flagTerbitAcs order by created_date desc limit 1", nativeQuery = true)
+    @Query(value="select*from dbo.penjaminan_kur where no_sertifikat = :noSertifikat and flag_terbit_acs = :flagTerbitAcs order by created_date desc OFFSET 0 ROWS FETCH FIRST 1 ROWS ONLY ", nativeQuery = true)
     Optional<PenjaminanKur> findByNoSertifikatAndFlagTerbitAcs(String noSertifikat, String flagTerbitAcs);
 }

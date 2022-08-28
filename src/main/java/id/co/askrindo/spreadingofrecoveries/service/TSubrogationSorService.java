@@ -70,7 +70,7 @@ public class TSubrogationSorService {
                     }
                 }
 
-                Optional<TSubrogasi> tSubrogasi = tSubrogasiRepository.findByNoRekening(tSubrogationValidation.get().getNomorPeserta());
+                Optional<TSubrogasi> tSubrogasi = tSubrogasiRepository.findByNomorPeserta(tSubrogationValidation.get().getNomorPeserta());
                 if (tSubrogasi.isPresent()) {
                     Optional<TSubrogasiSummary> tSubrogasiSummary = tSubrogasiSummaryRepository.findByIdSubrogasi(tSubrogasi.get().getId());
                     if (tSubrogasiSummary.isPresent()) {
